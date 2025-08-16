@@ -7,7 +7,7 @@ def filter_by_state(list_vocab: list, state: str = 'EXECUTED') -> list:
     return filtered_list
 
 
-def sort_by_date(list_vocab_filter: list, sort_way: bool=True) -> list:
+def sort_by_date(list_vocab_filter: list, sort_way: bool = True) -> list:
     """Функция возвращает новый список словарей, отсортированный по дате (date)."""
     try:
         list_vocab_sort = sorted(list_vocab_filter, key=lambda x: x['date'], reverse=sort_way)
