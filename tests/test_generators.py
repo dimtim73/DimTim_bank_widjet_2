@@ -7,19 +7,24 @@ from src.generators import filter_by_currency, transaction_descriptions, card_nu
 # Фикстура для тестов
 @pytest.fixture
 def transactions():
+    """предоставляет список транзакций для всех тестов.
+"""
     return transactions_list
 
 # Тесты
 def test_filter_by_currency(transactions):
+    """проверяет правильность фильтрации по валюте"""
     result = filter_by_currency(transactions, 'USD')
-    assert len(result) == 5
+    assert len(list(result)) == 5
     assert all(trans["operationAmount"]["currency"]["name"] == 'USD' for trans in result)
 
 def test_transaction_descriptions(transactions):
+    """проверяет правильность получения описаний транзакций"""
     result = transaction_descriptions(transactions)
-    assert len(result) == 5
-    assert 'Перевод организации' in result
-    assert 'МАХинация' in result
+    result_list = list(result)
+    assert len(result_list) == 5
+    assert 'Перевод организации' in result_list
+    assert 'МАХинация' in result_list
 
 @pytest.mark.parametrize("start, finish, expected", [
     (1, 4, ["0000 0000 0000 0001",
@@ -30,5 +35,6 @@ def test_transaction_descriptions(transactions):
               "0000 0000 0000 0012"]),
 ])
 def test_card_number_generator(start, finish, expected):
+    """параметризованный тест для проверки генерации номеров карт"""
     result = list(card_number_generator(start, finish))
     assert result == expected
