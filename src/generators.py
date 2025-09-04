@@ -78,7 +78,7 @@ transactions_list = [
 def filter_by_currency (transactions: list, currency_list):
     """ Функция принимает на вход список словарей, представляющих транзакции."""
 
-    transaction = [trans for trans in transactions if trans["operationAmount"]["currency"]["name"] == "USD"]
+    transaction = (trans for trans in transactions if trans["operationAmount"]["currency"]["name"] == "USD")
     return transaction
 
 
@@ -91,8 +91,11 @@ for _ in range(2):
 def transaction_descriptions(transactions: list):
     """Генератор, который принимает список словарей с транзакциями и возвращает описание каждой операции по очереди.
 """
-    descriptions = [transactions["description"] for transactions in transactions]
-    return descriptions
+    # descriptions = [transactions["description"] for transactions in transactions]
+    # return descriptions
+    for transaction in transactions:
+        yield transaction["description"]
+
 
 
 descriptions_list = transaction_descriptions(transactions_list)
@@ -106,14 +109,14 @@ def card_number_generator(start, finish):
     card_number_int = [str(x) for x in range(start, finish)]
     print(card_number_int)
     pattern = "0000000000000000"
-    card_numbers = []
+    # card_numbers = []
     for n in card_number_int:
         p = pattern[:-len(n)] + n
         p = p[:4] + " " + p[4:8] + " " + p[8:12] + " " + p[12:]
         yield p
         #card_numbers.append(p)
 
-    return card_numbers
+    # return card_numbers
 
 
 for card_number in card_number_generator(1, 11):
